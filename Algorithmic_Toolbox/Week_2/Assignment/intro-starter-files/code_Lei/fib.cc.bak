@@ -1,0 +1,24 @@
+#include <iostream>
+
+int calc_fib(int n, int *p) {
+	int i = 0;
+	if (n <= 1)
+		return n;
+	else
+		for (i = 2; i < n; i++)
+		{
+			p[i] = p[i - 1] + p[i - 2];
+		}
+	return p[n - 1];
+}
+
+int main() {
+    int n = 0;
+    std::cin >> n;
+	int F[n] = {0};
+	int *p = F;
+	F[0] = 0;
+	F[1] = 1;
+    std::cout << calc_fib(n, p) << '\n';
+    return 0;
+}

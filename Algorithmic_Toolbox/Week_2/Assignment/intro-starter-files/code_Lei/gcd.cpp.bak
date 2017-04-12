@@ -1,0 +1,34 @@
+#include <iostream>
+
+int gcd(int a, int b) 
+{
+  //write your code here
+  int max = 0;
+  int min = 0;
+  if (b >= a)
+  {
+	  max = b;
+	  min = a;
+  }
+  else
+  {
+	  max = a;
+	  min = b;
+  }
+
+  if (min = 0)
+  {
+	  return max;
+  }
+  else
+  {
+	  return gcd(min, max%min)
+  }
+}
+
+int main() {
+  int a, b;
+  std::cin >> a >> b;
+  std::cout << gcd(a, b) << std::endl;
+  return 0;
+}

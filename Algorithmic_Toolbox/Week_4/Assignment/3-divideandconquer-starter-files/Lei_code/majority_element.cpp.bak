@@ -1,0 +1,102 @@
+#include <algorithm>
+#include <iostream>
+#include <vector>
+
+using std::vector;
+
+int get_majority_element(vector<int> &a, int left, int right) 
+{
+  if (left == right) return a[left];
+  //write your code here
+  int mid = left + (right - left)/2;
+  int majority_left = get_majority_element(a, left, mid);
+  int majority_right = get_majority_element(a, mid + 1, right);
+  if (majority_left == -1 && majority_right == -1)
+  {
+	  return -1;
+  }
+  else if (majority_left != -1 && majority_right == -1)
+  {
+	  int count = 0;
+	  for (int i = left; i < right; i ++)
+	  {
+		  if (a[i] == majority_left)
+		  {
+			  count ++;
+		  }
+
+	  }
+	  if (count > (right - left + 1)/2)
+	  {
+		  return majority_left;
+	  }
+	  else
+	  {
+		  return -1;
+	  }
+  }
+
+  else if (majority_left == -1 && majority_right != -1)
+  {
+	  int count = 0;
+	  for (int i = left; i < right; i ++)
+	  {
+		  if (a[i] == majority_right)
+		  {
+			  count ++;
+		  }
+
+	  }
+	  if (count > (right - left + 1)/2)
+	  {
+		  return majority_right;
+	  }
+	  else
+	  {
+		  return -1;
+	  }
+  }
+
+  else
+  {
+	  int count = 0;
+	  for (int i = left; i < right; i ++)
+	  {
+		  if (a[i] == majority_left)
+		  {
+			  count ++;
+		  }
+
+	  }
+	  if (count > (right - left + 1)/2)
+	  {
+		  return majority_left;
+	  }
+
+	  count = 0;
+	  for (int i = left; i < right; i ++)
+	  {
+		  if (a[i] == majority_right)
+		  {
+			  count ++;
+		  }
+
+	  }
+	  if (count > (right - left + 1)/2)
+	  {
+		  return majority_right;
+	  }
+	  return -1;
+  }
+
+}
+
+int main() {
+  int n;
+  std::cin >> n;
+  vector<int> a(n);
+  for (size_t i = 0; i < a.size(); ++i) {
+    std::cin >> a[i];
+  }
+  std::cout << (get_majority_element(a, 0, a.size() - 1) != -1) << '\n';
+}

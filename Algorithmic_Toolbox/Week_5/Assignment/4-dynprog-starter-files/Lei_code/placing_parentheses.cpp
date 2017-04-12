@@ -1,0 +1,142 @@
+#include <iostream>
+#include <cassert>
+#include <string>
+#include <vector>
+
+using std::vector;
+using std::string;
+
+
+long long eval(long long a, long long b, char op) {
+  if (op == '*') {
+    return a * b;
+  } else if (op == '+') {
+    return a + b;
+  } else if (op == '-') {
+    return a - b;
+  } else {
+    assert(0);
+  }
+}
+
+long long Maximum(long long a, long long b, long long c, long long d, long long e)
+{
+	long long maximum = a;
+	if (b > maximum)
+	{
+		maximum = b;
+	}
+	if (c > maximum)
+	{
+		maximum = c;
+	}
+	if (d > maximum)
+	{
+		maximum = d;
+	}
+	if (e > maximum)
+	{
+		maximum = e;
+	}
+	return maximum;
+}
+
+long long Minimum(long long a, long long b, long long c, long long d, long long e)
+{
+	long long minimum = a;
+	if (b < minimum)
+	{
+		minimum = b;
+	}
+	if (c < minimum)
+	{
+		minimum = c;
+	}
+	if (d < minimum)
+	{
+		minimum = d;
+	}
+	if (e < minimum)
+	{
+		minimum = e;
+	}
+	return minimum;
+}
+
+void MinAndMax(vector<vector<long long>> &minimum, vector<vector<long long>> &maximum, int i, int j, vector<char> &op)
+{
+	long long min = eval(maximum[i][i], maximum[i + 1][j], op[i]);
+	long long max = eval(maximum[i][i], maximum[i + 1][j], op[i]);
+	for (int k = i; k < j; k ++)
+	{
+		long long a = eval(maximum[i][k], maximum[k + 1][j], op[k]);
+		long long b = eval(maximum[i][k], minimum[k + 1][j], op[k]);
+		long long c = eval(minimum[i][k], maximum[k + 1][j], op[k]);
+		long long d = eval(minimum[i][k], minimum[k + 1][j], op[k]);
+		min = Minimum(min, a, b, c, d);
+		max = Maximum(max, a, b, c, d);
+	}
+	minimum[i][j] = min;
+	maximum[i][j] = max;
+}
+
+
+long long get_maximum_value(const string &exp) {
+  //write your code here
+  vector<int> d;
+  vector<char> op;
+  for (size_t i = 0; i < exp.size(); i ++)
+  {
+	  if (i % 2 == 0)
+	  {
+		  d.push_back(exp[i] - '0');
+	  }
+	  else
+	  {
+		  op.push_back(exp[i]);
+	  }
+  }
+  // print d and op
+  /*
+  for (size_t i = 0; i < d.size(); i ++)
+  {
+	  std::cout << d[i] << ' ';
+  }
+
+  for (size_t i = 0; i < op.size(); i ++)
+  {
+	  std::cout << op[i] << ' ';
+  }
+  */
+
+  vector<vector<long long>> minimum; // minumum array
+  vector<vector<long long>> maximum; // maximum array
+  int n = d.size();
+  minimum.resize(n);
+  maximum.resize(n);
+  for (int i = 0; i < n; i ++)
+  {
+	  minimum[i].resize(n);
+	  maximum[i].resize(n);
+  }
+  for (int i = 0; i < n; i ++)
+  {
+	  minimum[i][i] = d[i];
+	  maximum[i][i] = d[i];
+  }
+  for (int s = 1; s < n; s ++)
+  {
+	  for (int i = 0; i < n - s; i ++)
+	  {
+		  int j = i + s;
+		  MinAndMax(minimum, maximum, i, j, op);
+	  }
+  }
+  return maximum[0][n - 1];
+}
+
+int main() {
+  string s;
+  std::cin >> s;
+  std::cout << get_maximum_value(s) << '\n';
+}
